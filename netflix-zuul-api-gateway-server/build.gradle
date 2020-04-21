@@ -1,0 +1,54 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.6.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+}
+
+group = 'com.nagpal'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('springCloudVersion', "Hoxton.SR3")
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-zuul'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	//distributed tracing
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-sleuth', version: '1.0.0.RELEASE'
+//	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-bus-amqp', version: '2.2.0.RELEASE'
+//	compile group: 'org.springframework.cloud', name: 'spring-cloud-sleuth-zipkin', version: '2.2.2.RELEASE'
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-zipkin', version: '2.2.2.RELEASE'
+	compile group: 'org.springframework.amqp', name: 'spring-rabbit', version: '2.2.5.RELEASE'
+
+
+
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+test {
+	useJUnitPlatform()
+}
